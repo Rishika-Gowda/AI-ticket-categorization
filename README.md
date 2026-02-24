@@ -34,7 +34,7 @@ An AI-based system that automatically categorizes IT support tickets using NLP a
 3. Run the main file
 
 ## Results
-Model Accuracy: 93%
+Model Accuracy: 93.4%
 
 ## Author
 Rishika Gowda M
