@@ -1,0 +1,33 @@
+{
+  "total_training": 16337,
+  "category_accuracy": 88.5,
+  "priority_accuracy": 70.3,
+  "queue_accuracy": 67.4,
+  "categories": {
+    "Incident": 6571,
+    "Request": 4665,
+    "Problem": 3397,
+    "Change": 1704
+  },
+  "priorities": {
+    "medium": 6617,
+    "high": 6346,
+    "low": 3374
+  },
+  "queues": {
+    "Technical Support": 4737,
+    "Product Support": 3073,
+    "Customer Service": 2409,
+    "IT Support": 1942,
+    "Billing and Payments": 1595,
+    "Returns and Exchanges": 820,
+    "Service Outages and Maintenance": 664,
+    "Sales and Pre-Sales": 513,
+    "Human Resources": 348,
+    "General Inquiry": 236
+  },
+  "languages": {
+    "en": 16338,
+    "de": 12249
+  }
+}

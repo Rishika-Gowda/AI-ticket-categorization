@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics — SmartDesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="app-body">
+
+<nav class="app-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <rect width="12" height="12" rx="3" fill="#00D4FF"/>
+        <rect x="16" width="12" height="12" rx="3" fill="#0056FF" opacity="0.7"/>
+        <rect y="16" width="12" height="12" rx="3" fill="#0056FF" opacity="0.7"/>
+        <rect x="16" y="16" width="12" height="12" rx="3" fill="#00D4FF" opacity="0.5"/>
+      </svg>
+      <span>Smart<strong>Desk</strong></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/dashboard" class="nav-link">Dashboard</a>
+      <a href="/analytics" class="nav-link active">Analytics</a>
+    </div>
+    <div class="nav-user">
+      <span class="user-badge" id="user-initials">—</span>
+      <span class="user-name" id="user-name-nav">Loading...</span>
+      <button class="btn-ghost" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="app-main">
+  <div class="app-container">
+
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Analytics</h1>
+        <p class="page-sub">Insights from your ticket history and model performance</p>
+      </div>
+    </div>
+
+    <!-- MODEL PERFORMANCE CARDS -->
+    <div class="analytics-section">
+      <h2 class="analytics-section-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        AI Model Performance
+      </h2>
+      <div class="model-perf-grid">
+        <div class="model-card">
+          <div class="model-label">Category Classification</div>
+          <div class="model-algo">Incident · Request · Problem · Change</div>
+          <div class="model-acc-wrap">
+            <div class="model-acc" id="acc-category">88.5%</div>
+            <div class="model-acc-bar"><div class="mab-fill" id="mab-cat" style="width:88.5%"></div></div>
+          </div>
+          <div class="model-detail">Trained on 16,337 real support tickets</div>
+        </div>
+        <div class="model-card">
+          <div class="model-label">Priority Detection</div>
+          <div class="model-algo">High · Medium · Low</div>
+          <div class="model-acc-wrap">
+            <div class="model-acc" id="acc-priority">70.3%</div>
+            <div class="model-acc-bar"><div class="mab-fill mab-cyan" id="mab-pri" style="width:70.3%"></div></div>
+          </div>
+          <div class="model-detail">With automatic urgency escalation</div>
+        </div>
+        <div class="model-card">
+          <div class="model-label">Queue Routing</div>
+          <div class="model-algo">10 support queues</div>
+          <div class="model-acc-wrap">
+            <div class="model-acc" id="acc-queue">67.4%</div>
+            <div class="model-acc-bar"><div class="mab-fill mab-violet" id="mab-que" style="width:67.4%"></div></div>
+          </div>
+          <div class="model-detail">Routes to the right team automatically</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER TICKET CHARTS -->
+    <div class="charts-grid">
+      <div class="chart-card cc-wide">
+        <div class="chart-card-header">
+          <h3>Tickets Over Last 7 Days</h3>
+          <span class="chart-sub" id="total-label">0 total</span>
+        </div>
+        <canvas id="dailyChart" height="120"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header"><h3>By Category</h3></div>
+        <canvas id="categoryChart" height="180"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header"><h3>By Priority</h3></div>
+        <canvas id="priorityChart" height="180"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header"><h3>By Status</h3></div>
+        <canvas id="statusChart" height="180"></canvas>
+      </div>
+    </div>
+
+    <!-- TRAINING DATA SECTION -->
+    <div class="analytics-section">
+      <h2 class="analytics-section-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+        AI Training Overview
+      </h2>
+      <div class="train-grid">
+        <div class="train-card">
+          <div class="train-title">Ticket Categories</div>
+          <div class="train-bars" id="type-bars">
+            <div class="tb-item"><span>Incident</span><div class="tb-bar"><div class="tb-fill" style="width:40%"></div></div><span>40%</span></div>
+            <div class="tb-item"><span>Request</span><div class="tb-bar"><div class="tb-fill" style="width:29%"></div></div><span>29%</span></div>
+            <div class="tb-item"><span>Problem</span><div class="tb-bar"><div class="tb-fill" style="width:21%"></div></div><span>21%</span></div>
+            <div class="tb-item"><span>Change</span><div class="tb-bar"><div class="tb-fill" style="width:10%"></div></div><span>10%</span></div>
+          </div>
+        </div>
+        <div class="train-card">
+          <div class="train-title">Priority Levels</div>
+          <div class="train-bars">
+            <div class="tb-item"><span>Medium</span><div class="tb-bar"><div class="tb-fill tb-medium" style="width:40%"></div></div><span>40%</span></div>
+            <div class="tb-item"><span>High</span><div class="tb-bar"><div class="tb-fill tb-high" style="width:39%"></div></div><span>39%</span></div>
+            <div class="tb-item"><span>Low</span><div class="tb-bar"><div class="tb-fill tb-low" style="width:21%"></div></div><span>21%</span></div>
+          </div>
+        </div>
+        <div class="train-card">
+          <div class="train-title">What the AI Knows</div>
+          <div class="dataset-stats">
+            <div class="ds-stat"><strong>28,587</strong><span>Real Tickets Learned From</span></div>
+            <div class="ds-stat"><strong>88.5%</strong><span>Classification Accuracy</span></div>
+            <div class="ds-stat"><strong>70.3%</strong><span>Priority Accuracy</span></div>
+            <div class="ds-stat"><strong>10</strong><span>Support Queues</span></div>
+            <div class="ds-stat"><strong>4</strong><span>Ticket Categories</span></div>
+            <div class="ds-stat"><strong>3</strong><span>Priority Levels</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="/static/js/analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+nexus.db
+.env
+instance/
+.vscode/

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — SmartDesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="app-body">
+
+<!-- APP NAV -->
+<nav class="app-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <rect width="12" height="12" rx="3" fill="#00D4FF"/>
+        <rect x="16" width="12" height="12" rx="3" fill="#0056FF" opacity="0.7"/>
+        <rect y="16" width="12" height="12" rx="3" fill="#0056FF" opacity="0.7"/>
+        <rect x="16" y="16" width="12" height="12" rx="3" fill="#00D4FF" opacity="0.5"/>
+      </svg>
+      <span>Smart<strong>Desk</strong></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/dashboard" class="nav-link active">Dashboard</a>
+      <a href="/analytics" class="nav-link">Analytics</a>
+    </div>
+    <div class="nav-user">
+      <span class="user-badge" id="user-initials">—</span>
+      <span class="user-name" id="user-name-nav">Loading...</span>
+      <button class="btn-ghost" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- DASHBOARD CONTENT -->
+<main class="app-main">
+  <div class="app-container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">My Dashboard</h1>
+        <p class="page-sub">Manage and track your IT support tickets</p>
+      </div>
+      <div class="page-actions">
+        <div class="sort-control">
+          <label>Sort by</label>
+          <select id="sortSelect" onchange="loadTickets()">
+            <option value="date">Date</option>
+            <option value="priority">Priority</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-cards">
+      <div class="stat-card sc-total">
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-val" id="stat-total">—</span>
+          <span class="sc-label">Total Tickets</span>
+        </div>
+      </div>
+      <div class="stat-card sc-today">
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-val" id="stat-today">—</span>
+          <span class="sc-label">Today</span>
+        </div>
+      </div>
+      <div class="stat-card sc-pending">
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-val" id="stat-pending">—</span>
+          <span class="sc-label">Pending</span>
+        </div>
+      </div>
+      <div class="stat-card sc-resolved">
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-val" id="stat-resolved">—</span>
+          <span class="sc-label">Resolved</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TICKETS TABLE -->
+    <div class="tickets-card">
+      <div class="tickets-card-header">
+        <h2>Ticket History</h2>
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all" onclick="filterTickets(this,'all')">All</button>
+          <button class="filter-btn" data-filter="Pending" onclick="filterTickets(this,'Pending')">Pending</button>
+          <button class="filter-btn" data-filter="In Progress" onclick="filterTickets(this,'In Progress')">In Progress</button>
+          <button class="filter-btn" data-filter="Resolved" onclick="filterTickets(this,'Resolved')">Resolved</button>
+        </div>
+      </div>
+
+      <div class="tickets-table-wrap">
+        <table class="tickets-table" id="ticketsTable">
+          <thead>
+            <tr id="tableHeader">
+              <th>ID</th>
+              <th>Subject</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Queue</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ticketsBody">
+            <tr><td colspan="8" class="empty-row">Loading tickets...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- STATUS MODAL -->
+<div class="modal-overlay hidden" id="statusModal">
+  <div class="modal-card" style="max-width: 520px;">
+    <div class="modal-header">
+      <h3>Update Ticket Status</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <strong style="color: var(--text-1); font-size: 0.95rem;">Ticket <span id="modal-ticket-id"></span></strong>
+      <p style="font-size: 0.85rem; color: var(--text-3); margin-top: 4px;" id="modal-ticket-subject"></p>
+    </div>
+    
+    <div class="form-group">
+      <label>Update Status</label>
+      <select id="statusSelect" class="status-select">
+        <option value="Pending">⏳ Pending</option>
+        <option value="In Progress">🔄 In Progress</option>
+        <option value="Resolved">✅ Resolved</option>
+        <option value="Closed">🔒 Closed</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Admin Notes (Optional)</label>
+      <textarea id="adminNotes" rows="3" placeholder="Add resolution details, notes for the user, or internal comments..." style="width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; resize: vertical;"></textarea>
+    </div>
+    
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+      <button class="btn-submit" onclick="applyStatusUpdate()" style="flex: 1; margin: 0;">
+        <span class="btn-text">Update Ticket</span>
+        <span class="btn-loader hidden">Updating...</span>
+      </button>
+      <button class="btn-ghost" onclick="closeModal()" style="padding: 15px 24px;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.status-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-0);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-1);
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+.status-select:focus {
+  border-color: var(--blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+</style>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>
