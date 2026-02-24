@@ -17,17 +17,6 @@ An AI-based system that automatically categorizes IT support tickets using NLP a
 - NumPy
 - Matplotlib
 
-## Project Structure
-- data/
-- models/
-- static/
-- templates/
-- create_admin.py
-- nexus.db
-- requirements.txt
-- train_models.py
-- app.py
-
 ## How to Run
 1. Clone the repository
 2. Install requirements
